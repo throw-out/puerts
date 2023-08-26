@@ -8,11 +8,19 @@ inputs:
   cachekey:
     required:
   UNITY_USERNAME:
-    required:
+    description: 'Required Unity account username.'
+    required: true
   UNITY_PASSWORD:
-    required:
+    description: 'Required Unity account password.'
+    required: true
   UNITY_SERIAL:
-    required:
+    description: 'Unity license serial key. Used for Plus/Professional license activation.'
+    required: false
+    default: ''
+  UNITY_AUTHENTICATOR_KEY:
+    description: 'Unity account authenticator key for Authenticator App (Two Factor Authentication). Used for account verification during Personal license activation.'
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -39,10 +47,20 @@ runs:
         path: C:/UNITY
         key: ${{ inputs.os }}-${{ inputs.cachekey }}-unity 
 
-    - name: Activate Unity
+    - name: Activate Unity(by Serial)
       uses: kuler90/activate-unity@v1
+      if: inputs.UNITY_SERIAL != ''
       with:
         unity-path: C:/UNITY/${{ inputs.version }}/Editor/Unity.exe
         unity-username: ${{ inputs.UNITY_USERNAME }}
         unity-password: ${{ inputs.UNITY_PASSWORD }}
         unity-serial: ${{ inputs.UNITY_SERIAL }}
+        
+    - name: Activate Unity(by Authenticator)
+      uses: kuler90/activate-unity@v1
+      if: inputs.UNITY_SERIAL == '' && inputs.UNITY_AUTHENTICATOR_KEY != ''
+      with:
+        unity-path: C:/UNITY/${{ inputs.version }}/Editor/Unity.exe
+        unity-username: ${{ inputs.UNITY_USERNAME }}
+        unity-password: ${{ inputs.UNITY_PASSWORD }}
+        unity-authenticator-key: ${{ inputs.UNITY_AUTHENTICATOR_KEY }}
