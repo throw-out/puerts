@@ -8,7 +8,7 @@ inputs:
   cachekey:
     required:
   UNITY_USERNAME:
-    description: 'Required Unity account username.'
+    description: 'Required Unity account username.(With the exception of GITHUB_TOKEN, secrets are not passed to the runner when a workflow is triggered from a forked repository.)'
     required: true
   UNITY_PASSWORD:
     description: 'Required Unity account password.'
@@ -64,3 +64,8 @@ runs:
         unity-username: ${{ inputs.UNITY_USERNAME }}
         unity-password: ${{ inputs.UNITY_PASSWORD }}
         unity-authenticator-key: ${{ inputs.UNITY_AUTHENTICATOR_KEY }}
+
+    - name: Faliure
+      if: (inputs.UNITY_AUTHENTICATOR_KEY == null || inputs.UNITY_AUTHENTICATOR_KEY == '') && (inputs.UNITY_SERIAL == null || inputs.UNITY_SERIAL == '')
+      run: |
+        echo "The UNITY_SERIAL or UNITY_AUTHENTICATOR_KEY  parameter is required."
