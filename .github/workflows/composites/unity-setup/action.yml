@@ -49,7 +49,7 @@ runs:
 
     - name: Activate Unity(by Serial)
       uses: kuler90/activate-unity@v1
-      if: inputs.UNITY_SERIAL != ''
+      if: inputs.UNITY_SERIAL != null && inputs.UNITY_SERIAL != ''
       with:
         unity-path: C:/UNITY/${{ inputs.version }}/Editor/Unity.exe
         unity-username: ${{ inputs.UNITY_USERNAME }}
@@ -58,7 +58,7 @@ runs:
         
     - name: Activate Unity(by Authenticator)
       uses: kuler90/activate-unity@v1
-      if: inputs.UNITY_SERIAL == '' && inputs.UNITY_AUTHENTICATOR_KEY != ''
+      if: inputs.UNITY_AUTHENTICATOR_KEY != null && inputs.UNITY_AUTHENTICATOR_KEY != '' && (inputs.UNITY_SERIAL == null || inputs.UNITY_SERIAL == '')
       with:
         unity-path: C:/UNITY/${{ inputs.version }}/Editor/Unity.exe
         unity-username: ${{ inputs.UNITY_USERNAME }}
