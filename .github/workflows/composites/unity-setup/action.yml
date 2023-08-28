@@ -64,8 +64,3 @@ runs:
         unity-username: ${{ inputs.UNITY_USERNAME }}
         unity-password: ${{ inputs.UNITY_PASSWORD }}
         unity-authenticator-key: ${{ inputs.UNITY_AUTHENTICATOR_KEY }}
-
-    - name: Faliure
-      if: (inputs.UNITY_AUTHENTICATOR_KEY == null || inputs.UNITY_AUTHENTICATOR_KEY == '') && (inputs.UNITY_SERIAL == null || inputs.UNITY_SERIAL == '')
-      run: |
-        echo "The UNITY_SERIAL or UNITY_AUTHENTICATOR_KEY  parameter is required."
